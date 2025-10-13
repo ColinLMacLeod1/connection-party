@@ -15,6 +15,7 @@
   --color-theme-blue: #b0c4ef;
   --color-theme-purple: #ba81c5;
   --color-theme-beige: #efefe6;
+  --color-theme-selected-tile: #5a594e;
 
 }
 
@@ -23,12 +24,17 @@
   line-height: 1.5;
   font-weight: 400;
 
+
   background-color: white;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100vh;
 }
 
 body {
