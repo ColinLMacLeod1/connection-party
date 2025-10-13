@@ -1,11 +1,7 @@
-import { useState } from "react";
+import { useNavigate } from "react-router";
 
 function App() {
-  const [count, setCount] = useState(0);
-  const buttonClick = () => {
-    const test = count;
-    setCount(test);
-  };
+  const navigate = useNavigate();
 
   return (
     <>
@@ -33,7 +29,7 @@ function App() {
                   className={
                     "font-tile rounded-md bg-theme-beige px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:bg-theme-blue hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-theme-blue"
                   }
-                  onClick={buttonClick}
+                  onClick={() => navigate("/game/123")}
                 >
                   Join Room
                 </a>
@@ -42,7 +38,7 @@ function App() {
                   className={
                     "font-tile rounded-md bg-theme-beige px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:bg-theme-purple hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-purple"
                   }
-                  onClick={buttonClick}
+                  onClick={() => navigate("/setup")}
                 >
                   Create Room
                 </a>
