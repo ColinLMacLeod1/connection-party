@@ -1,16 +1,27 @@
 import { useState, useEffect, useContext } from "react";
 import { RoomContext } from "../contexts/RoomContext";
 import Tile from "../components/Tile";
+import CorrectBlock from "../components/CorrectBlock";
 import defaultRoom from "../assets/sampleRoom.json";
 
 function Game() {
+  const { room, updateRoom } = useContext(RoomContext);
   const [selected, setSelected] = useState<string[]>([]);
   const [wordList, setWordList] = useState<string[]>([]);
-  const { room, updateRoom } = useContext(RoomContext);
+  const [correctList, setCorrectList] = useState<string[]>([]);
 
   useEffect(() => {
     updateRoom(defaultRoom);
-  });
+  }, []);
+
+  useEffect(() => {
+    console.log("CorrectList: ", JSON.stringify(correctList));
+  }, [correctList]);
+
+  useEffect(() => {
+    correctReorder();
+    console.log("Correct list: ", JSON.stringify(correctList));
+  }, [correctList]);
 
   useEffect(() => {
     updateRoom(defaultRoom);
@@ -26,7 +37,25 @@ function Game() {
   }, [room.games, updateRoom]);
 
   const onSubmit = () => {
-    console.log("SUBMIT");
+    if (selected.length !== 4) {
+      return;
+    }
+    ["yellow", "green", "blue", "purple"].forEach((key) => {
+      if (
+        selected.every((val) =>
+          room.games[0][
+            key as "yellow" | "green" | "blue" | "purple"
+          ].words.includes(val)
+        )
+      ) {
+        setSelected([]);
+        setCorrectList([...correctList, key]);
+        correctReorder();
+        console.log("CORRECT!");
+      } else {
+        console.log("Not correct for ", key);
+      }
+    });
   };
 
   const onShuffle = () => {
@@ -39,57 +68,103 @@ function Game() {
       console.log("Unselecting word: ", word);
       setSelected(selected.filter((item) => item !== word));
     } else {
-      if (selected.length < 4) {
+      if (selected.length < 4 && correctColor(word) === "blank") {
         console.log("Selected word: ", word);
         setSelected([...selected, word]);
       }
     }
   };
 
-  function shuffleArray([...array]: string[]) {
+  const shuffleArray = ([...array]: string[]) => {
     return array.sort(() => Math.random() - 0.5);
-  }
+  };
+
+  const correctColor = (word: string) => {
+    for (const correctCategory of correctList) {
+      if (
+        room.games[0][
+          correctCategory as "yellow" | "green" | "blue" | "purple"
+        ].words.includes(word)
+      ) {
+        return correctCategory;
+      }
+    }
+
+    return "blank";
+  };
+
+  const correctReorder = () => {
+    const correctOrder = [];
+    for (const correctCategory of correctList) {
+      correctOrder.push(
+        ...room.games[0][
+          correctCategory as "yellow" | "green" | "blue" | "purple"
+        ].words
+      );
+    }
+
+    setWordList([
+      ...correctOrder,
+      ...wordList.filter((word) => correctColor(word) === "blank"),
+    ]);
+  };
 
   return (
     <>
       <div className={"bg-white h-full flex items-center justify-center"}>
-        <div className={"relative isolate"}>
-          <div className={"mx-auto max-w-2xl"}>
-            <div className={"text-center"}>
-              <p
-                className={
-                  "mt-8 text-lg font-medium text-pretty text-gray-500 sm:text-xl/8"
-                }
-              >
-                Make groups of four!
-              </p>
-              <ul className="grid grid-cols-4 gap-4 font-tile font-semibold text-black uppercase my-8">
-                {wordList.map((word) => (
+        <div className={"mx-0 lg:max-w-2xl md:w-xl w-[22.5rem] px-[0.5rem]"}>
+          <div className={"text-center"}>
+            <p
+              className={
+                "mt-8 text-lg font-medium text-pretty text-gray-500 md:text-xl/8"
+              }
+            >
+              Make groups of four!
+            </p>
+            <ul className="grid grid-cols-4 gap-[0.5rem] font-tile font-semibold text-black uppercase my-8">
+              {correctList.map((correctCategory) => {
+                const currentCategory =
+                  room.games[0][
+                    correctCategory as "yellow" | "green" | "blue" | "purple"
+                  ];
+                return (
+                  <CorrectBlock
+                    words={currentCategory.words}
+                    title={currentCategory.title}
+                    color={correctCategory}
+                    className="col-span-4 h-[5rem] flex  flex-col items-center justify-center text-wrap text-[0.75rem] md:text-lg"
+                  />
+                );
+              })}
+              {wordList
+                .filter((word) => correctColor(word) === "blank")
+                .map((word) => (
                   <Tile
                     word={word}
                     key={word}
                     onClick={onSelect}
                     isSelected={selected.includes(word)}
+                    color={correctColor(word)}
+                    className="h-[5rem]  md:w-auto flex items-center justify-center text-wrap text-[0.65rem] md:text-lg"
                   />
                 ))}
-              </ul>
-              <div className={"flex items-center justify-center gap-x-6"}>
-                <div
-                  className={
-                    "font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:cursor-pointer hover:bg-theme-selected-tile hover:text-white hover:scale-110 hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-selected-tile"
-                  }
-                  onClick={onShuffle}
-                >
-                  Shuffle
-                </div>
-                <div
-                  className={
-                    "font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:cursor-pointer hover:bg-theme-selected-tile hover:text-white hover:scale-110 hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-selected-tile"
-                  }
-                  onClick={onSubmit}
-                >
-                  Submit
-                </div>
+            </ul>
+            <div className={"flex items-center justify-center gap-x-6"}>
+              <div
+                className={
+                  "font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:cursor-pointer hover:bg-theme-selected-tile hover:text-white hover:scale-110 hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-selected-tile"
+                }
+                onClick={onShuffle}
+              >
+                Shuffle
+              </div>
+              <div
+                className={
+                  "font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:cursor-pointer hover:bg-theme-selected-tile hover:text-white hover:scale-110 hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-selected-tile"
+                }
+                onClick={onSubmit}
+              >
+                Submit
               </div>
             </div>
           </div>
