@@ -112,7 +112,7 @@ function Game() {
   return (
     <>
       <div className={"bg-white h-full flex items-center justify-center"}>
-        <div className={"mx-0 lg:max-w-2xl md:w-xl w-[22.5rem] px-[0.5rem]"}>
+        <div className={"mx-0 lg:max-w-2xl md:w-xl w-[24.5rem] px-[0.5rem]"}>
           <div className={"text-center"}>
             <p
               className={
@@ -132,7 +132,7 @@ function Game() {
                     words={currentCategory.words}
                     title={currentCategory.title}
                     color={correctCategory}
-                    className="col-span-4 h-[5rem] flex  flex-col items-center justify-center text-wrap text-[0.75rem] md:text-lg"
+                    className="col-span-4 h-[5.5rem] flex  flex-col items-center justify-center text-wrap text-[0.75rem] md:text-lg"
                   />
                 );
               })}
@@ -145,7 +145,7 @@ function Game() {
                     onClick={onSelect}
                     isSelected={selected.includes(word)}
                     color={correctColor(word)}
-                    className="h-[5rem]  md:w-auto flex items-center justify-center text-wrap text-[0.65rem] md:text-lg"
+                    className="h-[5.5rem]  md:w-auto flex items-center justify-center text-wrap text-[0.75rem] md:text-lg"
                   />
                 ))}
             </ul>
