@@ -1,40 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import { RoomContext } from "../contexts/RoomContext";
 import Tile from "../components/Tile";
-
-const initalWordList = [
-  "KITE",
-  "ROBIN",
-  "SWALLOW",
-  "SWIFT",
-  "ETERNAL",
-  "EVERLASTING",
-  "FOREVER",
-  "PERMANENT",
-  "BEGINS",
-  "INSTITUTES",
-  "LAUNCHES",
-  "PIONEERS",
-  "DAYS",
-  "ENDING",
-  "RETURNS",
-  "TRAILS",
-];
+import defaultRoom from "../assets/sampleRoom.json";
 
 function Game() {
   const [selected, setSelected] = useState<string[]>([]);
-  const [wordList, setWordList] = useState<string[]>(initalWordList);
+  const [wordList, setWordList] = useState<string[]>([]);
+  const { room, updateRoom } = useContext(RoomContext);
 
-  const [order, setOrder] = useState(initalWordList);
+  useEffect(() => {
+    updateRoom(defaultRoom);
+  });
+
+  useEffect(() => {
+    updateRoom(defaultRoom);
+    if (room.games.length > 0) {
+      const initalWordList = shuffleArray([
+        ...room.games[0].yellow.words,
+        ...room.games[0].green.words,
+        ...room.games[0].blue.words,
+        ...room.games[0].purple.words,
+      ]);
+      setWordList(initalWordList);
+    }
+  }, [room.games, updateRoom]);
 
   const onSubmit = () => {
-    setOrder(shuffleArray(order));
     console.log("SUBMIT");
   };
+
   const onShuffle = () => {
     const newWordList = shuffleArray([...wordList]);
     setWordList(newWordList);
-
-    console.log("SHUFFLE");
   };
 
   const onSelect = (word: string) => {

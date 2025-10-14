@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 
-function App() {
+function Home() {
   const navigate = useNavigate();
 
   return (
@@ -51,4 +51,4 @@ function App() {
   );
 }
 
-export default App;
+export default Home;

@@ -1,0 +1,29 @@
+{
+  "roomID": "TEST1",
+  "games": [
+    {
+      "createdBy": "Colin",
+      "title": "Test Title",
+      "yellow": {
+        "title": "Birds",
+        "words": ["KITE", "ROBIN", "SWALLOW", "SWIFT"],
+        "hint": "test hint yellow"
+      },
+      "green": {
+        "title": "for all time",
+        "words": ["ETERNAL", "EVERLASTING", "FOREVER", "PERMANENT"],
+        "hint": "test hint green"
+      },
+      "blue": {
+        "title": "ESTABLISHES",
+        "words": ["BEGINS", "INSTITUTES", "LAUNCHES", "PIONEERS"],
+        "hint": "test hint blue"
+      },
+      "purple": {
+        "title": "hApPY ___",
+        "words": ["DAYS", "ENDING", "RETURNS", "TRAILS"],
+        "hint": "test hint purple"
+      }
+    }
+  ]
+}
