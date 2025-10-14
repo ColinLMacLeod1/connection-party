@@ -1,1 +1,1 @@
-{"root":["./src/app.tsx","./src/main.tsx","./src/vite-env.d.ts"],"version":"5.9.3"}
+{"root":["./src/main.tsx","./src/vite-env.d.ts","./src/components/correctblock.tsx","./src/components/tile.tsx","./src/contexts/roomcontext.tsx","./src/layouts/header.tsx","./src/pages/game.tsx","./src/pages/home.tsx","./src/pages/setup.tsx","./src/routes/routes.ts","./src/types/global.d.ts"],"version":"5.9.3"}
