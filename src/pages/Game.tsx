@@ -24,7 +24,10 @@ function Game() {
   const [selected, setSelected] = useState<string[]>([]);
   const [wordList, setWordList] = useState<string[]>(initalWordList);
 
+  const [order, setOrder] = useState(initalWordList);
+
   const onSubmit = () => {
+    setOrder(shuffleArray(order));
     console.log("SUBMIT");
   };
   const onShuffle = () => {
@@ -46,21 +49,8 @@ function Game() {
     }
   };
 
-  function shuffleArray(array: string[]) {
-    let currentIndex = array.length,
-      randomIndex;
-
-    while (currentIndex !== 0 || currentIndex < 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex],
-        array[currentIndex],
-      ];
-    }
-
-    return array;
+  function shuffleArray([...array]: string[]) {
+    return array.sort(() => Math.random() - 0.5);
   }
 
   return (
@@ -76,34 +66,33 @@ function Game() {
               >
                 Make groups of four!
               </p>
-              <div className="grid grid-cols-4 gap-4 font-tile font-semibold text-black uppercase my-8">
+              <ul className="grid grid-cols-4 gap-4 font-tile font-semibold text-black uppercase my-8">
                 {wordList.map((word) => (
                   <Tile
                     word={word}
+                    key={word}
                     onClick={onSelect}
                     isSelected={selected.includes(word)}
                   />
                 ))}
-              </div>
+              </ul>
               <div className={"flex items-center justify-center gap-x-6"}>
-                <a
-                  href="#"
+                <div
                   className={
-                    "font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:bg-theme-blue hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-theme-blue"
+                    "font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:cursor-pointer hover:bg-theme-selected-tile hover:text-white hover:scale-110 hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-selected-tile"
                   }
                   onClick={onShuffle}
                 >
                   Shuffle
-                </a>
-                <a
-                  href="#"
+                </div>
+                <div
                   className={
-                    "font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:bg-theme-purple hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-purple"
+                    "font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:cursor-pointer hover:bg-theme-selected-tile hover:text-white hover:scale-110 hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-selected-tile"
                   }
                   onClick={onSubmit}
                 >
                   Submit
-                </a>
+                </div>
               </div>
             </div>
           </div>
