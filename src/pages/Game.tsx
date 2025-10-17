@@ -31,7 +31,7 @@ function Game() {
 
 
   useEffect(() => {
-    updateRoom(defaultRoom);
+    if(searchParams.get("roomid") === "example")updateRoom(defaultRoom);
   }, []);
 
   useEffect(() => {
@@ -39,17 +39,18 @@ function Game() {
   }, [correctList]);
 
   useEffect(() => {
-    updateRoom(defaultRoom);
-    if (room.games.length > 0) {
+    const currentRoom = searchParams.get("roomid") === "example" ? defaultRoom : room
+
+    if (currentRoom.games.length > 0) {
       const initalWordList = shuffleArray([
-        ...room.games[0].yellow.words,
-        ...room.games[0].green.words,
-        ...room.games[0].blue.words,
-        ...room.games[0].purple.words,
+        ...currentRoom.games[0].yellow.words,
+        ...currentRoom.games[0].green.words,
+        ...currentRoom.games[0].blue.words,
+        ...currentRoom.games[0].purple.words,
       ]);
       setWordList(initalWordList);
     }
-  }, [room.games, updateRoom]);
+  }, [room, searchParams]);
 
   const addPopup = (text:string) => {
     setHintList([...hintList, text]);
@@ -124,7 +125,7 @@ function Game() {
   };
 
   const correctReorder = () => {
-    const correctOrder = [];
+    const correctOrder = [] as string[];
     for (const correctCategory of correctList) {
       correctOrder.push(
         ...room.games[0][
