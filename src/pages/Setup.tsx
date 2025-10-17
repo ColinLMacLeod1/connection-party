@@ -41,7 +41,7 @@ function Setup() {
                 <div className="w-full px-3 md:px-6">
                   <input
                     className="border-b-2 shadow-sm hover:scale-105 w-full text-center"
-                    placeholder="Group Decription"
+                    placeholder="Group Description"
                     maxLength={30}
                     {...register("yellow.title")}
                   />
@@ -80,7 +80,7 @@ function Setup() {
                 <div className="w-full px-3 md:px-6">
                   <input
                     className="border-b-2 shadow-sm hover:scale-105 w-full text-center"
-                    placeholder="Group Decription"
+                    placeholder="Group Description"
                     maxLength={30}
                     {...register("green.title")}
                   />
@@ -119,7 +119,7 @@ function Setup() {
                 <div className="w-full px-3 md:px-6">
                   <input
                     className="border-b-2 shadow-sm hover:scale-105 w-full text-center"
-                    placeholder="Group Decription"
+                    placeholder="Group Description"
                     maxLength={30}
                     {...register("blue.title")}
                   />
@@ -158,7 +158,7 @@ function Setup() {
                 <div className="w-full px-3 md:px-6">
                   <input
                     className="border-b-2 shadow-sm hover:scale-105 w-full text-center"
-                    placeholder="Group Decription"
+                    placeholder="Group Description"
                     maxLength={30}
                     {...register("purple.title")}
                   />
