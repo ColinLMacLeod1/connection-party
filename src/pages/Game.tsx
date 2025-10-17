@@ -35,16 +35,7 @@ function Game() {
   }, []);
 
   useEffect(() => {
-    console.log("Search params: ", searchParams.get("roomid"))
-  }, [searchParams]);
-
-  useEffect(() => {
-    console.log("CorrectList: ", JSON.stringify(correctList));
-  }, [correctList]);
-
-  useEffect(() => {
     correctReorder();
-    console.log("Correct list: ", JSON.stringify(correctList));
   }, [correctList]);
 
   useEffect(() => {
@@ -92,7 +83,6 @@ function Game() {
           3
         )
       ) {
-        console.log("One Away! For: ", key);
         isWrong = false;
         addPopup("One Away...");
       } 
@@ -107,11 +97,9 @@ function Game() {
 
   const onSelect = (word: string) => {
     if (selected.includes(word)) {
-      console.log("Unselecting word: ", word);
       setSelected(selected.filter((item) => item !== word));
     } else {
       if (selected.length < 4 && correctColor(word) === "blank") {
-        console.log("Selected word: ", word);
         setSelected([...selected, word]);
       }
     }
@@ -154,7 +142,7 @@ function Game() {
   return (
     <>
       <div className={"bg-white h-full flex items-center justify-center"}>
-        <div className={"mx-0 lg:max-w-2xl md:w-xl w-[24.5rem] px-[0.5rem]"}>
+        <div className={"mx-0 lg:max-w-2xl md:w-xl w-[24.2rem] px-[0.5rem]"}>
           <div className={"text-center"}>
             <p
               className={
@@ -168,7 +156,7 @@ function Game() {
                 <HintPopup text={text} />
               ))}
             </div>
-            <ul className="grid grid-cols-4 gap-[0.5rem] font-tile font-semibold text-black uppercase mb-8">
+            <ul className="grid grid-cols-4 gap-[0.4rem] font-tile font-semibold text-black uppercase mb-8">
               {correctList.map((correctCategory) => {
                 const currentCategory =
                   room.games[0][

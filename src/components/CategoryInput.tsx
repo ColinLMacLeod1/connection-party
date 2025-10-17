@@ -25,7 +25,7 @@ function BaseComponent({
   );
 }
 
-function CorrectBlock({ words, title, color, className }: CorrectBlockProps) {
+function CategoryInput({ words, title, color, className }: CategoryInputProps) {
   const ref = useRef(null);
   return (
     <MotionTile
@@ -41,7 +41,7 @@ function CorrectBlock({ words, title, color, className }: CorrectBlockProps) {
   );
 }
 
-export default CorrectBlock;
+export default CategoryInput;
 
 interface BaseComponentProps {
   words: string[];
@@ -52,15 +52,9 @@ interface BaseComponentProps {
   ref: LegacyRef<HTMLDivElement> | null;
 }
 
-interface CorrectBlockProps {
+interface CategoryInputProps {
   words: string[];
   title: string;
   color: string;
   className?: string;
 }
-
-// const spring: Transition = {
-//   duration: 0.8,
-//   delay: 0.5,
-//   ease: [0, 0.71, 0.2, 1.01],
-// };
