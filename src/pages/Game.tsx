@@ -150,7 +150,7 @@ function Game() {
                 "mt-8 text-lg font-medium text-pretty text-gray-500 md:text-xl/8"
               }
             >
-              {`${ searchParams.get("roomid") === "example" ? "This is just a sample, the abbility to join room is coming soon!" : "Make groups of four!"}`} 
+              {`${ searchParams.get("roomid") === "example" ? "This is just a sample, the ability to join rooms is coming soon!" : "Make groups of four!"}`} 
             </p>
             <div className="my-1 h-10 relative">
               {hintList.map((text) => (
