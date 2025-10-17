@@ -35,8 +35,7 @@ function CorrectBlock({ words, title, color, className }: CorrectBlockProps) {
       className={className}
       ref={ref}
       layout
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      animate={{ y: [50, 0, 0], opacity: [0, 0.5, 1] }}
       transition={{ duration: 0.5 }}
     />
   );
