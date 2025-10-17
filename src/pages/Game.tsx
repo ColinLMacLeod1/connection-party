@@ -1,37 +1,23 @@
 import { useState, useEffect, useContext } from "react";
 import { useSearchParams, useNavigate } from "react-router";
 import { RoomContext } from "../contexts/RoomContext";
+import confetti from "canvas-confetti";
 import Tile from "../components/Tile";
 import CorrectBlock from "../components/CorrectBlock";
 import defaultRoom from "../assets/sampleRoom.json";
 import HintPopup from "../components/HintPopup";
 
-function hasNumberOfMatchingValues(
-  array1: string[],
-  array2: string[],
-  requiredCount: number
-) {
-  let matchCount = 0;
-  for (const item of array1) {
-    if (array2.includes(item)) {
-      matchCount++;
-    }
-  }
-  return matchCount === requiredCount;
-}
-
 function Game() {
   const navigate = useNavigate();
-  const [ searchParams ] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const { room, updateRoom } = useContext(RoomContext);
   const [selected, setSelected] = useState<string[]>([]);
   const [wordList, setWordList] = useState<string[]>([]);
   const [correctList, setCorrectList] = useState<string[]>([]);
   const [hintList, setHintList] = useState<string[]>([]);
 
-
   useEffect(() => {
-    if(searchParams.get("roomid") === "example")updateRoom(defaultRoom);
+    if (searchParams.get("roomid") === "example") updateRoom(defaultRoom);
   }, []);
 
   useEffect(() => {
@@ -39,7 +25,12 @@ function Game() {
   }, [correctList]);
 
   useEffect(() => {
-    const currentRoom = searchParams.get("roomid") === "example" ? defaultRoom : room
+    if (correctList.length === 4) confettiExplosion();
+  }, [correctList]);
+
+  useEffect(() => {
+    const currentRoom =
+      searchParams.get("roomid") === "example" ? defaultRoom : room;
 
     if (currentRoom.games.length > 0) {
       const initalWordList = shuffleArray([
@@ -52,10 +43,10 @@ function Game() {
     }
   }, [room, searchParams]);
 
-  const addPopup = (text:string) => {
+  const addPopup = (text: string) => {
     setHintList([...hintList, text]);
     //TODO: cleanup pop ups
-  }
+  };
 
   const onSubmit = () => {
     if (selected.length !== 4) {
@@ -77,6 +68,7 @@ function Game() {
         correctReorder();
         addPopup("CORRECT! 🎉");
         console.log("CORRECT!");
+        
       } else if (
         hasNumberOfMatchingValues(
           selected,
@@ -86,9 +78,9 @@ function Game() {
       ) {
         isWrong = false;
         addPopup("One Away...");
-      } 
+      }
     });
-    if(isWrong) addPopup("Nope :( Try Again!");
+    if (isWrong) addPopup("Nope :( Try Again!");
   };
 
   const onShuffle = () => {
@@ -150,7 +142,7 @@ function Game() {
                 "mt-8 text-lg font-medium text-pretty text-gray-500 md:text-xl/8"
               }
             >
-              {`${ searchParams.get("roomid") === "example" ? "This is just a sample, the ability to join rooms is coming soon!" : "Make groups of four!"}`} 
+              {`${searchParams.get("roomid") === "example" ? "This is just a sample, the ability to join rooms is coming soon!" : "Make groups of four!"}`}
             </p>
             <div className="my-1 h-10 relative">
               {hintList.map((text) => (
@@ -217,5 +209,44 @@ function Game() {
     </>
   );
 }
+
+function hasNumberOfMatchingValues(
+  array1: string[],
+  array2: string[],
+  requiredCount: number
+) {
+  let matchCount = 0;
+  for (const item of array1) {
+    if (array2.includes(item)) {
+      matchCount++;
+    }
+  }
+  return matchCount === requiredCount;
+}
+
+const confettiExplosion = () => {
+  const duration = 3 * 1000;
+  const animationEnd = Date.now() + duration;
+  const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+  const randomInRange = (min: number, max: number) =>
+    Math.random() * (max - min) + min;
+  const interval = window.setInterval(() => {
+    const timeLeft = animationEnd - Date.now();
+    if (timeLeft <= 0) {
+      return clearInterval(interval);
+    }
+    const particleCount = 50 * (timeLeft / duration);
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 },
+    });
+    confetti({
+      ...defaults,
+      particleCount,
+      origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 },
+    });
+  }, 250);
+};
 
 export default Game;
