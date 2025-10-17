@@ -16,7 +16,7 @@ createRoot(document.getElementById("root")!).render(
         <Routes>
           <Route index element={<Home />} />
           <Route path="setup" element={<Setup />} />
-          <Route path="game/:roomid" element={<Game />} />
+          <Route path="game" element={<Game />} />
         </Routes>
       </RoomProvider>
     </BrowserRouter>

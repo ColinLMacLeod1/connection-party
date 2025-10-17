@@ -29,7 +29,7 @@ function Home() {
                   className={
                     "font-tile rounded-md bg-theme-beige px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:bg-theme-blue hover:scale-105 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bg-theme-blue"
                   }
-                  onClick={() => navigate("/game/123")}
+                  onClick={() => navigate("/game?roomid=example")}
                 >
                   Join Room
                 </a>

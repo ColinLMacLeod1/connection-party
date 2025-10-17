@@ -1,4 +1,5 @@
 import { useState, useEffect, useContext } from "react";
+import { useSearchParams, useNavigate } from "react-router";
 import { RoomContext } from "../contexts/RoomContext";
 import Tile from "../components/Tile";
 import CorrectBlock from "../components/CorrectBlock";
@@ -20,15 +21,22 @@ function hasNumberOfMatchingValues(
 }
 
 function Game() {
+  const navigate = useNavigate();
+  const [ searchParams ] = useSearchParams();
   const { room, updateRoom } = useContext(RoomContext);
   const [selected, setSelected] = useState<string[]>([]);
   const [wordList, setWordList] = useState<string[]>([]);
   const [correctList, setCorrectList] = useState<string[]>([]);
   const [hintList, setHintList] = useState<string[]>([]);
 
+
   useEffect(() => {
     updateRoom(defaultRoom);
   }, []);
+
+  useEffect(() => {
+    console.log("Search params: ", searchParams.get("roomid"))
+  }, [searchParams]);
 
   useEffect(() => {
     console.log("CorrectList: ", JSON.stringify(correctList));
@@ -153,7 +161,7 @@ function Game() {
                 "mt-8 text-lg font-medium text-pretty text-gray-500 md:text-xl/8"
               }
             >
-              Make groups of four!
+              {`${ searchParams.get("roomid") === "example" ? "This is just a sample, the abbility to join room is coming soon!" : "Make groups of four!"}`} 
             </p>
             <div className="my-1 h-10 relative">
               {hintList.map((text) => (
@@ -189,6 +197,14 @@ function Game() {
                 ))}
             </ul>
             <div className={"flex items-center justify-center gap-x-6"}>
+              <div
+                className={
+                  "w-30 h-12 flex items-center justify-center font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:cursor-pointer hover:bg-theme-selected-tile hover:text-white hover:scale-110 hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-selected-tile"
+                }
+                onClick={() => navigate("/")}
+              >
+                Back
+              </div>
               <div
                 className={
                   "w-30 h-12 flex items-center justify-center font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:cursor-pointer hover:bg-theme-selected-tile hover:text-white hover:scale-110 hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-selected-tile"
