@@ -47,7 +47,7 @@ interface BaseComponentProps {
   words: string[];
   title: string;
   color: string;
-  className: string;
+  className?: string;
   key: string;
   ref: LegacyRef<HTMLDivElement> | null;
 }
@@ -56,7 +56,7 @@ interface CorrectBlockProps {
   words: string[];
   title: string;
   color: string;
-  className: string;
+  className?: string;
 }
 
 // const spring: Transition = {

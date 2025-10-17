@@ -44,7 +44,7 @@ interface BaseTileProps {
   key: string;
   ref: LegacyRef<HTMLDivElement> | null;
   color: string;
-  className: string;
+  className?: string;
 }
 
 interface TileProps {
@@ -52,7 +52,7 @@ interface TileProps {
   onClick: (word: string) => void;
   isSelected: boolean;
   color: string;
-  className: string;
+  className?: string;
 }
 
 const spring: Transition = {

@@ -3,12 +3,28 @@ import { RoomContext } from "../contexts/RoomContext";
 import Tile from "../components/Tile";
 import CorrectBlock from "../components/CorrectBlock";
 import defaultRoom from "../assets/sampleRoom.json";
+import HintPopup from "../components/HintPopup";
+
+function hasNumberOfMatchingValues(
+  array1: string[],
+  array2: string[],
+  requiredCount: number
+) {
+  let matchCount = 0;
+  for (const item of array1) {
+    if (array2.includes(item)) {
+      matchCount++;
+    }
+  }
+  return matchCount === requiredCount;
+}
 
 function Game() {
   const { room, updateRoom } = useContext(RoomContext);
   const [selected, setSelected] = useState<string[]>([]);
   const [wordList, setWordList] = useState<string[]>([]);
   const [correctList, setCorrectList] = useState<string[]>([]);
+  const [hintList, setHintList] = useState<string[]>([]);
 
   useEffect(() => {
     updateRoom(defaultRoom);
@@ -36,26 +52,44 @@ function Game() {
     }
   }, [room.games, updateRoom]);
 
+  const addPopup = (text:string) => {
+    setHintList([...hintList, text]);
+    //TODO: cleanup pop ups
+  }
+
   const onSubmit = () => {
     if (selected.length !== 4) {
+      addPopup("Select 4 words!");
       return;
     }
+    let isWrong = true;
     ["yellow", "green", "blue", "purple"].forEach((key) => {
       if (
-        selected.every((val) =>
-          room.games[0][
-            key as "yellow" | "green" | "blue" | "purple"
-          ].words.includes(val)
+        hasNumberOfMatchingValues(
+          selected,
+          room.games[0][key as "yellow" | "green" | "blue" | "purple"].words,
+          4
         )
       ) {
+        isWrong = false;
         setSelected([]);
         setCorrectList([...correctList, key]);
         correctReorder();
+        addPopup("CORRECT! 🎉");
         console.log("CORRECT!");
-      } else {
-        console.log("Not correct for ", key);
-      }
+      } else if (
+        hasNumberOfMatchingValues(
+          selected,
+          room.games[0][key as "yellow" | "green" | "blue" | "purple"].words,
+          3
+        )
+      ) {
+        console.log("One Away! For: ", key);
+        isWrong = false;
+        addPopup("One Away...");
+      } 
     });
+    if(isWrong) addPopup("Nope :( Try Again!");
   };
 
   const onShuffle = () => {
@@ -121,7 +155,12 @@ function Game() {
             >
               Make groups of four!
             </p>
-            <ul className="grid grid-cols-4 gap-[0.5rem] font-tile font-semibold text-black uppercase my-8">
+            <div className="my-1 h-10 relative">
+              {hintList.map((text) => (
+                <HintPopup text={text} />
+              ))}
+            </div>
+            <ul className="grid grid-cols-4 gap-[0.5rem] font-tile font-semibold text-black uppercase mb-8">
               {correctList.map((correctCategory) => {
                 const currentCategory =
                   room.games[0][
@@ -152,7 +191,7 @@ function Game() {
             <div className={"flex items-center justify-center gap-x-6"}>
               <div
                 className={
-                  "font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:cursor-pointer hover:bg-theme-selected-tile hover:text-white hover:scale-110 hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-selected-tile"
+                  "w-30 h-12 flex items-center justify-center font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:cursor-pointer hover:bg-theme-selected-tile hover:text-white hover:scale-110 hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-selected-tile"
                 }
                 onClick={onShuffle}
               >
@@ -160,7 +199,7 @@ function Game() {
               </div>
               <div
                 className={
-                  "font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:cursor-pointer hover:bg-theme-selected-tile hover:text-white hover:scale-110 hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-selected-tile"
+                  "w-30 h-12 flex items-center justify-center font-tile rounded-full border border-black px-3.5 py-2.5 text-sm font-semibold text-black shadow-xs hover:cursor-pointer hover:bg-theme-selected-tile hover:text-white hover:scale-110 hover:border-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-selected-tile"
                 }
                 onClick={onSubmit}
               >
